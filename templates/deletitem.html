@@ -1,0 +1,20 @@
+{% extends "main.html" %}
+{% block content %}
+<html>
+<body>
+<h1> Are you sure you want to delete {{B.name}}? </h1>
+
+
+<form action="{{ url_for('DeleteItem',categorie_name=A.name,item_name=B.name)}}" method = 'post'>
+
+<input type='submit', value = 'Delete'>
+
+
+
+
+</form>
+
+<a href = '{{url_for('ShowItem',categorie_name=A.name)}}'> Cancel </a>
+</body>
+</html>
+{% endblock %}
