@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask import session as login_session
 from sqlalchemy import create_engine, asc, desc
@@ -16,15 +14,14 @@ import requests
 import psycopg2
 
 
-
 app = Flask(__name__)
-
+APP_PATH = '/var/www/FlaskApp/FlaskApp/'
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open(APP_PATH +'client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "catalog"
 
 
-engine = create_engine('postgresql://catalog:catalog/catalog')
+engine = create_engine('postgresql://catalog:catalog@localhost/catalog')
 Base.metadata.bind = engine
 Session = sessionmaker(bind=engine)
 
@@ -52,7 +49,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets(APP_PATH +'client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -348,7 +345,5 @@ def EachItemJSON(categorie_name, item_name):
     return jsonify(CategorieItems=item.serializable)
 
 
-if __name__ == '__main__':
-    app.secret_key = 'super_secret_key'
-    app.debug = True
-    app.run(host='0.0.0.0', port=8000)
+if __name__ == "__main__":
+    app.run()
