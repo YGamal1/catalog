@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-
 import os
 import sys
 from sqlalchemy import Column, ForeignKey, Integer, String
@@ -22,8 +20,8 @@ class Categorie(Base):
     __tablename__ = 'categorie'
     id = Column(Integer)
     name = Column(String(250), nullable=False, primary_key=True)
-   
-    
+
+
     @property
     def serializable(self):
         """Return object data in easily serializeable format"""
@@ -38,7 +36,7 @@ class CategorieItem(Base):
 
     name = Column(String(80), nullable=False)
     id = Column (Integer, primary_key=True)
-    description = Column(String(250)) 
+    description = Column(String(250))
     categorie_name = Column(String(250), ForeignKey('categorie.name'))
     categorie = relationship(Categorie, backref='items')
     user_id = Column(Integer, ForeignKey('user.id'))
@@ -56,7 +54,7 @@ class CategorieItem(Base):
         }
 
 
-engine = create_engine('postgresql://catalog:catalog/catalog')
+engine = create_engine('postgresql://catalog:catalog@localhost/catalog')
 
 
 Base.metadata.create_all(engine)
